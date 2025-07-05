@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keval-users-deployment
+  labels:
+    app: keval-users
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keval-users
+  template:
+    metadata:
+      labels:
+        app: keval-users
+    spec:
+      containers:
+      - name: keval-users-container
+        image: keval/users:latest
+        # Always use locally available image
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_APPLICATION_JSON
+            value: '{
+              "pods.marketplaceUrl": "http://keval-marketplace-service:8080",
+              "pods.walletsUrl": "http://keval-wallets-service:8080"
+            }'

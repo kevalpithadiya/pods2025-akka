@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keval-wallets-deployment
+  labels:
+    app: keval-wallets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keval-wallets
+  template:
+    metadata:
+      labels:
+        app: keval-wallets
+    spec:
+      containers:
+      - name: keval-wallets-container
+        image: keval/wallets:latest
+        # Always use locally available image
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
